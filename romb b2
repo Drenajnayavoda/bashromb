@@ -1,0 +1,37 @@
+#!/bin/bash
+
+var1=$1
+echo $var1
+var2=$(($var1 - 1))
+echo $var2
+echo "Your ROMB with lenght of $var1 :"
+for ((i = 0; i < var1; i++))
+do
+for ((j = 0; j < var2+var1; j++))
+do
+echo -n " "
+done
+for ((j = 0; j < var1-var2; j++))
+do
+echo -n "."
+echo -n " "
+done
+echo
+var2=$(($var2 - 1))
+done
+var2=1
+for ((i=0; i < var1;i++))
+do
+for ((j=0; j < var2+var1;j++))
+do
+echo -n " "
+done
+for ((j=0;j<var1-var2;j++))
+do
+echo -n "."
+echo -n " "
+done 
+echo
+var2=$(($var2+1))
+done
+exit 0
