@@ -1,1 +1,61 @@
+!/bin/bash
+
+
+declare -a str
+
+
+while IFS="" read -r -n 1 x; do
+  str+=("$x")
+done <<< $1
+
+
+if [ $2 = "decode" ]; then
+  mount=0
+  bool=0
+  echo "декодирование:"
+
+  for i in ${str[@]}; do
+    if ((bool)); then
+      if (($mount != 0)); then
+        str2=$str2$i
+        mount=$(($mount - 1))
+      fi
+        if (($mount == 0)); then
+        bool=0
+        num=$(($str2))
+        str2=""
+        result=$result$(echo "ibase=2;$num" | bc)
+      fi
+     else
+      mount=$(($mount + 1))
+      if (($i == "1")); then
+        bool=1
+      fi
+fi
+done
+for i in ${result[@]}; do
+echo -n $i
+done
+else
+ num=$1
+ mount="${#num}"
+ echo "кодирование:"
+  for (( i=0; $i < $mount; i++ )); do
+    binar=${num:$i:1} 
+ result=$(echo "obase=2; $binar" | bc)
+ k=$((${#result} - 1))
+ for (( j=0; j < k; j++ )); do
+ echo -ne "0" 
+ done
+ echo -ne "1"$result 
+ done
+ echo
+fi
+
+echo
+
+exit 0
+
+
+
 
