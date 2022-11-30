@@ -12,32 +12,13 @@ done <<< $1
 #первая часть программы декодирует числа 
 
 if [ $2 = "decode" ]; then
-  mount=0 #вспомогательная переменная для подсчета символов
-  bool=0 #вспомогательная переменная для правильного считывания
-  echo "декодирование:"
-  
-  for i in ${str[@]}; do
-    if ((bool)); then
-      if (($mount != 0)); then
-        str2=$str2$i
-        mount=$(($mount - 1))
-      fi
-        if (($mount == 0)); then
-        bool=0
-        num=$(($str2))
-        str2=""
-        result=$result$(echo "ibase=2;$num" | bc)
-      fi
-      else
-        mount=$(($mount + 1))
-          if (($i == "1")); then
-          bool=1
-        fi
-      fi
-    done
-    for i in ${result[@]}; do
-      echo -n $i
-    done
+  for(( i = 0; i < ${#arr[@]}; i++ )); do
+  echo ${arr[@]}
+  i=$(($i + 1))
+  dec=$(echo "ibase=2; $cod${arr[$i]}" | bc)
+done
+
+#
 else
   num=$1
   mount="${#num}"
