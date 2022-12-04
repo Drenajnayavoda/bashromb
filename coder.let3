@@ -1,0 +1,60 @@
+#!/bin/bash
+
+#сначала делаем строку, разкладываем наши входные данные на отдельные числа с помощью параметра IFS и записываем в строку 
+
+declare -a str
+
+while IFS="" read -r -n 1 x; do
+  str+=("$x")
+done <<< $1
+
+#в моей программе чтобы закодиравать числа надо просто вписать их во входные данные, а чтобы декодировать надо после входных данных написать decode
+#первая часть программы декодирует числа 
+
+if [ $2 = "code" ]; then
+echo "кодирование"
+    for (( i=0; $i < ${#str[@]}; i++ )); do
+      result=$(echo "obase=2; ${str[$i]}" | bc)
+      k=$((${#result} - 1))
+        for (( j=0; j < k; j++ )); do
+          echo -ne "0" 
+        done
+      echo -ne "1"$result 
+    done
+  echo
+
+elif [ $2 = "decode" ]; then
+ mount=0 #вспомогательная переменная для подсчета символов
+  bool=0 #вспомогательная переменная для правильного считывания
+  echo "декодирование:"
+  for i in ${str[@]}; do
+    if ((bool)); then
+      if (($mount != 0)); then
+        str2=$str2$i
+        mount=$(($mount - 1))
+      fi
+        if (($mount == 0)); then
+        bool=0
+        num=$(($str2))
+        str2=""
+        result=$result$(echo "ibase=2;$num" | bc)
+      fi
+      else
+        mount=$(($mount + 1))
+          if (($i == "1")); then
+          bool=1
+        fi
+      fi
+    done
+    for i in ${result[@]}; do
+      echo -n $i
+    done
+
+else
+echo "ERROR: напишите опцию ПОСЛЕ числа (code/decode)!"
+exit 1
+fi
+
+echo
+
+exit 0
