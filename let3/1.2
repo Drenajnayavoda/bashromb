@@ -1,0 +1,79 @@
+#!/bin/bash
+
+
+Capslock() {
+  while read -r -n 1 x; do
+    str+=("$x")
+  done <<< ${s[$1]}
+
+   for ((j=0; j < ${#str[@]}; j++)); do
+
+    ascii=$(printf "%d" "'${str[$j]}'")
+
+    if (( $ascii >= 97 && $ascii <= 122 )); then
+      if [ $2 != "off" ]; then
+
+        str[$j]=$(printf "\\$(printf '%03o' "$(( $ascii - 32 ))")")
+
+      fi
+
+    elif (( $ascii >= 65 && $ascii <= 90 )); then
+
+      if [ $2 != "on" ]; then
+        str[$j]=$(printf "\\$(printf '%03o' "$(( $ascii + 32 ))")")
+      fi
+
+    fi
+
+   done
+
+  w=""
+  for j in ${str[@]}; do
+    w=$w$j
+  done
+
+  s[$1]=$w
+  str=('')
+
+}
+
+Exch() {
+  nt=${s[$1]}
+  s[$1]=${s[$2]}
+  s[$2]=$nt
+}
+
+
+read -p "Напишите строку s:" -r -a s
+
+for (( i = 0; i < ${#s[@]}; i++ )); do
+
+  if ((i % 2)); then
+
+    if (( ${#s[$i]} < ${#s[$(($i + 1))]} )); then
+      Exch $i $(($i + 1))
+
+    fi
+
+    Capslock $i on
+
+    else
+
+    if (( ${#s[$i]} > ${#s[$(($i + 1))]} )); then
+      Exch $i $(($i + 1))
+    fi
+
+    Capslock $i off
+
+  fi
+
+done
+
+for i in ${s[@]}; do
+  echo -n  $i
+  echo -n  " "
+done
+
+echo
+
+exit 0
