@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-read -p "Please write your phrase: " -r node
-read -p "Please write your shift: " -r shft
+read -p "Ваша фраза:" -r node
+read -p "shift:" -r shft
 
 declare -a str
 
