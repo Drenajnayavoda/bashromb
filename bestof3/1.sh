@@ -1,17 +1,17 @@
 #!/bin/bash
 
 
-words=()
-x=0
+words=()    #создаем массив
+x=0         #вспомогательный аргумент
 
-for i in "$@"; do
+for i in "$@"; do    #с помощью цикла записываем аргументы(слова) в массив
        words[$x]="$i"
        x=$x+1
 done
 
-lenght=${#words[@]}
+lenght=${#words[@]}   #узнаем количество слов в массиве 
 
-for ((i = 1; i <= lenght; i++)); do
+for ((i = 1; i <= lenght; i++)); do # с помощью цикла выводим слова в обратном порядке
         echo -n "${words[$(( $lenght-$i ))]} "
 done
 
