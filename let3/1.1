@@ -1,19 +1,19 @@
 
 #!/bin/bash
 
-declare -a str
+declare -a str   #создаем динамическую строку
 
-while IFS="" read -r -n 1 x; do
+while IFS="" read -r -n 1 x; do   #с помощью цикла и оператора ифс заполняем строку посимвольно с разделением "" из 1 аргумента командной строки
   str+=("$x")
 done <<< $1
 
-while IFS="" read -r -n 1 x; do
+while IFS="" read -r -n 1 x; do   ##с помощью цикла и оператора ифс заполняем строку посимвольно с разделением "" из 2 аргумента командной строки
   str+=("$x")
 done <<< $2
 
-readarray -t -d '' str2 < <(printf '%s\0' "${str[@]}" | sort -u -z )
-
-for i in ${str2[@]}; do
+readarray -t -d '' str2 < <(printf '%s\0' "${str[@]}" | sort -u -z ). #записываем в массив буквы, printf '%s\0' печатает строку, sort -u -z избавляемся
+                                                                     #от повторяющихся букв и сортируем по алфавиту.
+for i in ${str2[@]}; do    #выводим результат
   echo -n $i
 done
 
